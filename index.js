@@ -4,6 +4,7 @@ var express = require('express');
 var app = express();
 
 app.use(express.json());
+app.use(express.static('public'));
 
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
@@ -29,3 +30,6 @@ io.on('connection', (socket) => {
 });
 
 http.listen(3000, '134.122.122.148');
+// http.listen(3000, () => {
+//     console.log('listening on *:80');
+// });
