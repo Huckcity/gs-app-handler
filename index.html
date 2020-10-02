@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Socket.IO chat</title>
+
+</head>
+
+<body style="height: 100vh; display: flex; align-items: center; justify-content: center">
+
+    <div id="alwaysblue" style="
+    color: whitesmoke;
+    font-size: 108px;
+    font-weight: bold;
+    background-color: blue;
+    border: 1px solid wheat;
+    border-radius: 50%;
+    width: 500px; height: 500px; display: flex; align-items: center; justify-content: center;">test</div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+
+        socket.on('hello', (req) => {
+            document.getElementById("alwaysblue").innerText = req.amount;
+            console.log(req)
+        });
+    </script>
+</body>
+
+</html>
