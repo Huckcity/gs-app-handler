@@ -102,8 +102,8 @@
 
             var playbackOption = playbacks[Math.floor(Math.random() * playbacks.length)];
 
-            var audio = new Audio('/audio/' + playbackOption.audio);
-            var image = "url('/images/" + playbackOption.gif + "')";
+            var audio = new Audio('/public/audio/' + playbackOption.audio);
+            var image = "url('/public/images/" + playbackOption.gif + "')";
             var msg = new SpeechSynthesisUtterance("€"+amount+". Get that cash money!");
 
             waitingDiv.style.display = "none";
