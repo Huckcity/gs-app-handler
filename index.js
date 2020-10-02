@@ -28,4 +28,4 @@ io.on('connection', (socket) => {
     console.log('a user connected');
 });
 
-http.listen(3000, 'droplet_IP');
+http.listen(3000, '134.122.122.148');
