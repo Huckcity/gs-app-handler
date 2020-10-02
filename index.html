@@ -19,7 +19,8 @@
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        var socket = io();
+        // var socket = io();
+        var socket = io('http://droplet_IP:3000');
 
         socket.on('hello', (req) => {
             document.getElementById("alwaysblue").innerText = req.amount;
