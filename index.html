@@ -10,9 +10,8 @@
             padding: 0;
             display: flex;
             justify-content: center;
-
         }
-
+        
         #waiting {
             display: flex;
             align-items: center;
@@ -20,7 +19,7 @@
             height: 100vh;
             font-size: 5em;
         }
-
+        
         #gifholder {
             display: none;
             height: 100vh;
@@ -32,13 +31,13 @@
             color: white;
             font-family: sans-serif;
         }
-
+        
         #text {
             width: 500px;
             text-align: center;
             opacity: .5;
         }
-
+        
         .btn {
             position: absolute;
             bottom: 10px;
@@ -57,9 +56,7 @@
         <div id="text"></div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"
-        integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ=="
-        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js" integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ==" crossorigin="anonymous"></script>
     <script>
         // var socket = io();
         var socket = io('http://134.122.122.148:3000');
@@ -73,48 +70,41 @@
             var waitingDiv = document.getElementById('waiting');
             var moneyDiv = document.getElementById('gifholder');
             var textDiv = document.getElementById('text');
-            var playbacks = [
-                {
-                    "gif": "natureboy.gif",
-                    "audio": "pinkmoney.mp3"
-                },
-                {
-                    "gif": "natureshoes.gif",
-                    "audio": "woo.mp3"
-                },
-                {
-                    "gif": "resting.gif",
-                    "audio": "resting.mp3"
-                },
-                {
-                    "gif": "jerry.gif",
-                    "audio": "jerry.mp3"
-                },
-                {
-                    "gif": "gangsta.gif",
-                    "audio": "planes.mp3"
-                },
-                {
-                    "gif": "rookie.gif",
-                    "audio": "rookie.mp3"
-                }
-            ]
+            var playbacks = [{
+                "gif": "natureboy.gif",
+                "audio": "pinkmoney.mp3"
+            }, {
+                "gif": "natureshoes.gif",
+                "audio": "woo.mp3"
+            }, {
+                "gif": "resting.gif",
+                "audio": "resting.mp3"
+            }, {
+                "gif": "jerry.gif",
+                "audio": "jerry.mp3"
+            }, {
+                "gif": "gangsta.gif",
+                "audio": "planes.mp3"
+            }, {
+                "gif": "rookie.gif",
+                "audio": "rookie.mp3"
+            }]
 
             var playbackOption = playbacks[Math.floor(Math.random() * playbacks.length)];
 
             var audio = new Audio('/public/audio/' + playbackOption.audio);
             var image = "url('/public/images/" + playbackOption.gif + "')";
-            var msg = new SpeechSynthesisUtterance("&euro;"+amount+". Get that cash money!");
+            var msg = new SpeechSynthesisUtterance("€" + amount + ". Get that cash money!");
 
             waitingDiv.style.display = "none";
             moneyDiv.style.backgroundImage = image;
             moneyDiv.style.backgroundSize = "cover";
             moneyDiv.style.display = "flex";
-            textDiv.innerText = "€"+amount;
+            textDiv.innerText = "&euro;" + amount;
 
             audio.play();
 
-            audio.addEventListener("ended", function () {
+            audio.addEventListener("ended", function() {
                 window.speechSynthesis.speak(msg);
                 audio.currentTime = 0;
                 setTimeout(() => {
