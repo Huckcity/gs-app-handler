@@ -94,7 +94,7 @@
 
             var audio = new Audio('/public/audio/' + playbackOption.audio);
             var image = "url('/public/images/" + playbackOption.gif + "')";
-            var msg = new SpeechSynthesisUtterance("€" + amount + ". Get that cash money!");
+            var msg = new SpeechSynthesisUtterance(amount + " euro! Get that cash money!");
 
             waitingDiv.style.display = "none";
             moneyDiv.style.backgroundImage = image;
