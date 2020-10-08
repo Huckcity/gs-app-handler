@@ -149,7 +149,7 @@
                 var video = document.getElementById('video');
                 var source = document.createElement('source');
 
-                source.setAttribute('src', '/audio/' + playbackOption.mp4);
+                source.setAttribute('src', '/public/audio/' + playbackOption.mp4);
 
                 waitingDiv.style.display = "none";
                 videoDiv.style.display = "flex";
@@ -174,8 +174,8 @@
 
             } else {
 
-                var audio = new Audio('/audio/' + playbackOption.audio);
-                var image = "url('/images/" + playbackOption.gif + "')";
+                var audio = new Audio('/public/audio/' + playbackOption.audio);
+                var image = "url('/public/images/" + playbackOption.gif + "')";
 
                 waitingDiv.style.display = "none";
                 moneyDiv.style.backgroundImage = image;
