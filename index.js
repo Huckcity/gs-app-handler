@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')))
 
 var http = require('http').createServer(app);
-var io = require('socket.io')(http);
+var io = require('socket.io').listen(http);
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
@@ -34,7 +34,3 @@ io.on('connection', (socket) => {
 http.listen(PORT, () => {
     console.log('[LISTENING] Connected and listening on post '+PORT)
 });
-
-// http.listen(3000, () => {
-//     console.log('listening on *:80');
-// });
