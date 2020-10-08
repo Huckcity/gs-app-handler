@@ -29,7 +29,8 @@ io.on('connection', (socket) => {
     console.log('a user connected');
 });
 
-http.listen(3000, '134.122.122.148');
-// http.listen(3000, () => {
-//     console.log('listening on *:80');
-// });
+// http.listen(3000, '134.122.122.148');
+
+http.listen(3000, () => {
+    console.log('listening on *:80');
+});

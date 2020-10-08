@@ -11,7 +11,7 @@
             display: flex;
             justify-content: center;
         }
-        
+
         #waiting {
             display: flex;
             align-items: center;
@@ -19,7 +19,7 @@
             height: 100vh;
             font-size: 5em;
         }
-        
+
         #gifholder {
             display: none;
             height: 100vh;
@@ -31,13 +31,25 @@
             color: white;
             font-family: sans-serif;
         }
-        
+
+        #videoholder {
+            display: none;
+            height: 100vh;
+            width: 100vw;
+            align-items: center;
+            justify-content: center;
+            font-size: 15em;
+            font-weight: bold;
+            color: white;
+            font-family: sans-serif;
+        }
+
         #text {
             width: 500px;
             text-align: center;
             opacity: .5;
         }
-        
+
         .btn {
             position: absolute;
             bottom: 10px;
@@ -55,11 +67,18 @@
     <div id="gifholder">
         <div id="text"></div>
     </div>
+    <div id="videoholder">
+        <video id="video"></video>
+    </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js" integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ==" crossorigin="anonymous"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"
+        integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ=="
+        crossorigin="anonymous"></script> -->
+
+    <script src="/socket.io/socket.io.js"></script>
     <script>
-        // var socket = io();
-        var socket = io('http://134.122.122.148:3000');
+        var socket = io();
+        //var socket = io('http://134.122.122.148:3000');
 
         socket.on('hello', (req) => {
             console.log(req)
@@ -69,11 +88,13 @@
         function runTest(amount) {
             var waitingDiv = document.getElementById('waiting');
             var moneyDiv = document.getElementById('gifholder');
+            var videoDiv = document.getElementById('videoholder');
             var textDiv = document.getElementById('text');
-            var playbacks = [{
+            var playbacks = [
+            {
                 "gif": "natureboy.gif",
                 "audio": "pinkmoney.mp3"
-            }, {
+            },{
                 "gif": "natureshoes.gif",
                 "audio": "woo.mp3"
             }, {
@@ -88,31 +109,67 @@
             }, {
                 "gif": "rookie.gif",
                 "audio": "rookie.mp3"
+            },
+            {
+                "mp4": "stewie.mp4"
             }]
 
             var playbackOption = playbacks[Math.floor(Math.random() * playbacks.length)];
-
-            var audio = new Audio('/public/audio/' + playbackOption.audio);
-            var image = "url('/public/images/" + playbackOption.gif + "')";
             var msg = new SpeechSynthesisUtterance(amount + " euro! Get that cash money!");
 
-            waitingDiv.style.display = "none";
-            moneyDiv.style.backgroundImage = image;
-            moneyDiv.style.backgroundSize = "cover";
-            moneyDiv.style.display = "flex";
-            textDiv.innerHTML = "&euro;" + amount;
 
-            audio.play();
+            if (playbackOption.mp4) {
 
-            audio.addEventListener("ended", function() {
-                window.speechSynthesis.speak(msg);
-                audio.currentTime = 0;
-                setTimeout(() => {
-                    moneyDiv.style.display = "none";
-                    waitingDiv.style.display = "flex";
-                }, 3000);
+                var video = document.getElementById('video');
+                var source = document.createElement('source');
 
-            });
+                source.setAttribute('src', '/audio/' + playbackOption.mp4);
+
+                waitingDiv.style.display = "none";
+                videoDiv.style.display = "flex";
+                videoDiv.style.height = "100vh";
+                videoDiv.style.width = "100vw";
+                video.style.height = "100vh";
+                video.style.width = "100vw"
+                textDiv.innerHTML = "&euro;" + amount;
+
+                video.appendChild(source);
+                video.play();
+
+                video.addEventListener("ended", function () {
+                    window.speechSynthesis.speak(msg);
+                    video.currentTime = 0;
+                    setTimeout(() => {
+                        videoDiv.style.display = "none";
+                        waitingDiv.style.display = "flex";
+                    }, 3000);
+
+                });
+
+            } else {
+
+                var audio = new Audio('/audio/' + playbackOption.audio);
+                var image = "url('/images/" + playbackOption.gif + "')";
+
+                waitingDiv.style.display = "none";
+                moneyDiv.style.backgroundImage = image;
+                moneyDiv.style.backgroundSize = "cover";
+                moneyDiv.style.display = "flex";
+                textDiv.innerHTML = "&euro;" + amount;
+
+                audio.play();
+
+                audio.addEventListener("ended", function () {
+                    window.speechSynthesis.speak(msg);
+                    audio.currentTime = 0;
+                    setTimeout(() => {
+                        moneyDiv.style.display = "none";
+                        waitingDiv.style.display = "flex";
+                    }, 3000);
+
+                });
+
+            }
 
         }
     </script>
