@@ -4,7 +4,8 @@ var express = require('express');
 var app = express();
 
 app.use(express.json());
-app.use(express.static('public'));
+//app.use(express.static('public'));
+app.use('/public', express.static(__dirname+'/public'));
 
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
