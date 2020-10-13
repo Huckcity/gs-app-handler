@@ -59,13 +59,10 @@
 </head>
 
 <body>
-    <button id="btnTest" class="btn" onclick="runTest()">TEST ME</button>
+    <button id="btnTest" class="btn" onclick="runTest(300)">TEST ME</button>
 
     <div id="waiting">
         Printing money, please wait....
-    </div>
-    <div id="gifholder">
-        <div id="text"></div>
     </div>
     <div id="videoholder">
         <video id="video"></video>
@@ -76,126 +73,79 @@
         var socket = io('http://134.122.122.148:3000/');
 
         socket.on('hello', (req) => {
-            console.log(req)
-            runTest(req.amount);
+            console.log(req);
+            runTest(amount);
         });
 
         function runTest(amount) {
             var waitingDiv = document.getElementById('waiting');
-            var moneyDiv = document.getElementById('gifholder');
             var videoDiv = document.getElementById('videoholder');
-            var textDiv = document.getElementById('text');
             var playbacks = [
-            {
-                "gif": "natureboy.gif",
-                "audio": "pinkmoney.mp3"
-            },{
-                "gif": "natureshoes.gif",
-                "audio": "woo.mp3"
-            }, {
-                "gif": "resting.gif",
-                "audio": "resting.mp3"
-            }, {
-                "gif": "jerry.gif",
-                "audio": "jerry.mp3"
-            }, {
-                "gif": "gangsta.gif",
-                "audio": "planes.mp3"
-            }, {
-                "gif": "rookie.gif",
-                "audio": "rookie.mp3"
-            },
-            {
-                "mp4": "stewie.mp4"
-            },
-            {
-                "mp4": "anchorman.mp4"
-            },
-            {
-                "mp4": "cardoors.mp4"
-            },
-            {
-                "mp4": "dollarshaveclub.mp4"
-            },
-            {
-                "mp4": "familyguyjews.mp4"
-            },
-            {
-                "mp4": "goonies.mp4"
-            },
-            {
-                "mp4": "itcrowd.mp4"
-            },
-            {
-                "mp4": "rapbattles.mp4"
-            },
-            {
-                "mp4": "spongebob.mp4"
-            },
-            {
-                "mp4": "thebigshort.mp4"
-            },
-            {
-                "mp4": "wolfofwallst.mp4"
-            },
-        ]
+                {
+                    "mp4": "stewie.mp4"
+                },
+                {
+                    "mp4": "anchorman.mp4"
+                },
+                {
+                    "mp4": "cardoors.mp4"
+                },
+                {
+                    "mp4": "dollarshaveclub.mp4"
+                },
+                {
+                    "mp4": "familyguyjews.mp4"
+                },
+                {
+                    "mp4": "goonies.mp4"
+                },
+                {
+                    "mp4": "itcrowd.mp4"
+                },
+                {
+                    "mp4": "rapbattles.mp4"
+                },
+                {
+                    "mp4": "spongebob.mp4"
+                },
+                {
+                    "mp4": "thebigshort.mp4"
+                },
+                {
+                    "mp4": "wolfofwallst.mp4"
+                },
+            ];
 
             var playbackOption = playbacks[Math.floor(Math.random() * playbacks.length)];
             var msg = new SpeechSynthesisUtterance(amount + " euro! Get that cash money!");
 
+            var video = document.getElementById('video');
+            var source = document.createElement('source');
 
-            if (playbackOption.mp4) {
+            source.setAttribute('src', '/public/audio/' + playbackOption.mp4);
 
-                var video = document.getElementById('video');
-                var source = document.createElement('source');
+            waitingDiv.style.display = "none";
+            videoDiv.style.display = "flex";
+            videoDiv.style.height = "100vh";
+            videoDiv.style.width = "100vw";
+            video.style.height = "100vh";
+            video.style.width = "100vw";
 
-                source.setAttribute('src', '/public/audio/' + playbackOption.mp4);
+            video.appendChild(source);
+            video.play();
 
-                waitingDiv.style.display = "none";
-                videoDiv.style.display = "flex";
-                videoDiv.style.height = "100vh";
-                videoDiv.style.width = "100vw";
-                video.style.height = "100vh";
-                video.style.width = "100vw"
-                textDiv.innerHTML = "&euro;" + amount;
+            video.addEventListener("ended", function () {
+                window.speechSynthesis.speak(msg);
+                // video.currentTime = 0;
 
-                video.appendChild(source);
-                video.play();
+                setTimeout(() => {
+                    // videoDiv.style.display = "none";
+                    // waitingDiv.style.display = "flex";
+                    location.reload();
+                    return false;
+                }, 3000);
 
-                video.addEventListener("ended", function () {
-                    window.speechSynthesis.speak(msg);
-                    video.currentTime = 0;
-                    setTimeout(() => {
-                        videoDiv.style.display = "none";
-                        waitingDiv.style.display = "flex";
-                    }, 3000);
-
-                });
-
-            } else {
-
-                var audio = new Audio('/public/audio/' + playbackOption.audio);
-                var image = "url('/public/images/" + playbackOption.gif + "')";
-
-                waitingDiv.style.display = "none";
-                moneyDiv.style.backgroundImage = image;
-                moneyDiv.style.backgroundSize = "cover";
-                moneyDiv.style.display = "flex";
-                textDiv.innerHTML = "&euro;" + amount;
-
-                audio.play();
-
-                audio.addEventListener("ended", function () {
-                    window.speechSynthesis.speak(msg);
-                    audio.currentTime = 0;
-                    setTimeout(() => {
-                        moneyDiv.style.display = "none";
-                        waitingDiv.style.display = "flex";
-                    }, 3000);
-
-                });
-
-            }
+            });
 
         }
     </script>
